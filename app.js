@@ -26,7 +26,7 @@ for (let i = 0; i < TILE_COUNT; i++) {
   tile.style.left = `${x}px`;
   tile.style.top = `${y}px`;
 
-  tile.style.backgroundImage = "url('./estrela.png')";
+  tile.style.backgroundImage = "url('estrela.png')";
   tile.style.backgroundPosition = `50% 50%`;
 
   document.body.appendChild(tile);
@@ -114,13 +114,15 @@ async function riddle(){
     input.remove()
 
     const now = new Date()
-    if ((now.getHours() == 0 && now.getMinutes() == 0) || (now.getHours() == 22 && now.getMinutes() == 31) || (now.getHours() == 23 && now.getMinutes() == 59)){
+    if ((now.getHours() == 0 && now.getMinutes() == 0) || (now.getHours() == 22 && now.getMinutes() == 37) || (now.getHours() == 23 && now.getMinutes() == 59)){
         document.querySelector('#download').classList.remove('hidden')
     }
     else {
+        console.log(now.getMinutes())
+        console.log(now.getHours())
         const map = document.createElement("div")
         map.className = "big-img"
-        map.style.backgroundImage = "url('./gospel.png')"
+        map.style.backgroundImage = "url('gospel.png')"
         document.body.appendChild(map)
 
         await show_box(6)
