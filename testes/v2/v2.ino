@@ -24,16 +24,16 @@ static unsigned long lastCompass = 0; // for the timing of compass updates
 
 float targetLat = 41.5577919 * PI/180;
 float targetLon = -8.371417 * PI/180;
-double lat;
-double lon;
+double lat=0;
+double lon=0;
 
 void setup()
 {
   Serial.begin(9600);
   ss.begin(9600);
 
-  servo.attach(servoPin);
-  servo.write(90);  // posição inicial neutra
+  // servo.attach(servoPin);
+  // servo.write(90);  // posição inicial neutra
 
   if(!mag.begin()){
     /* There was a problem detecting the HMC5883 ... check your connections */
@@ -58,14 +58,18 @@ void loop()
     lon = gps.location.lng() * PI/180;
   }
 
-  if (millis() - lastCompass > 2000) { // update orientation once per second
+  if (millis() - lastCompass > 2000) { 
     lastCompass = millis();
     updateCompass();
   }
 
   if (millis() - lastServo > 2000) {
     lastServo = millis();
+    servo.attach(servoPin);
     updateServo();
+  }
+  if (millis() - lastServo > 500) {
+    servo.detach();
   }
 
 
@@ -99,7 +103,7 @@ void updateCompass(){
   sensors_event_t event; 
   mag.getEvent(&event);
 
-  float heading = atan2(event.magnetic.y, event.magnetic.x);
+  float heading = atan2(event.magnetic.z - 2.55, event.magnetic.x + 1.63);
   float declinationAngle = -0.05;
   heading += declinationAngle;
   
@@ -109,6 +113,8 @@ void updateCompass(){
   if(heading > 2*PI) heading -= 2*PI;
 
   headingDegrees = heading * 180/M_PI; 
+  // Serial.print("Current orientation: ");
+  // Serial.println(headingDegrees);
   
 }
 
@@ -125,7 +131,6 @@ void updateServo(){
   if (angleToTurn > 180) angleToTurn -= 360;
   if (angleToTurn < -180) angleToTurn += 360;
 
-  if (abs(angleToTurn - prevHeading) < 30) return;
   prevHeading = angleToTurn;
 
   float servoAngle = angleToTurn + 90;

@@ -4,6 +4,10 @@ const code2 = "lco7w" // codigo para aceder ao jogo
 const code3 = "4pwod" // codigo para riddle com midnight gospel
 const code_final = "3sg4y" // codigo para reprogramar a bussola
 
+const extra_code = "ak3m8"
+const schematic_code = "hj4bi" //obtido depois de ver o grafiti
+
+
 debug = document.getElementById("debug")
 function print(a){
     debug.textContent = a;
@@ -49,6 +53,8 @@ input.addEventListener("keydown", (e) => {
     if (codigo === code2) game_download()
     if (codigo === code3) riddle()
     if (codigo === code_final) final_code()
+    if (codigo === extra_code) waste_time()
+    if (codigo === schematic_code) schematics()
 
     // if (![code1,code2,code3,code_final].includes(codigo)) treasure_map(codigo);
   }
@@ -90,7 +96,9 @@ function clue_image(){
 }
 
 
-
+async function waste_time(){
+    await show_box(7)
+}
 
 
 async function game_download(){
@@ -114,7 +122,7 @@ async function riddle(){
     input.remove()
 
     const now = new Date()
-    if ((now.getHours() == 0 && now.getMinutes() == 0) || (now.getHours() == 22 && now.getMinutes() == 37) || (now.getHours() == 23 && now.getMinutes() == 59)){
+    if ((now.getHours() == 0 && now.getMinutes() == 0) || (now.getHours() == 0 && now.getMinutes() == 1) || (now.getHours() == 23 && now.getMinutes() == 59)){
         document.querySelector('#download').classList.remove('hidden')
     }
     else {
@@ -138,4 +146,12 @@ async function final_code(){
     document.querySelectorAll(".tile").forEach(t=>t.remove())
 
     await show_box(999)
+}
+
+
+async function schematics() {
+    const sch = document.createElement("div")
+    sch.className = "small-img"
+    sch.style.backgroundImage = "url('esquematico.jpeg')"
+    document.body.appendChild(sch)
 }
