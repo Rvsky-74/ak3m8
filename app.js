@@ -8,73 +8,45 @@ const code_phi = "abc23"
 const extra_code = "ak3m8"
 const schematic_code = "hj4bi" //obtido depois de ver o grafiti
 
+const BOX_TEXTS = {
+  1: "Top sabes escrever códigos já percebi",
+  2: "Mas e saber programar?",
+  3: "Para a próxima parte tens 2 possibilidades",
+  4: "Aprender a controlar event listeners",
+  5: "Ou brute force (aconselho a teres calma)",
+  6: "The time has passed, and it is yet to come",
+  7: "Espertinho, mas esse código foi só uma sequencia aleatória para te fazer perder tempo"
+};
 
-function createPuzzleElements() {
-    const debugElement = document.createElement("p");
-    debugElement.id = "debug";
-    document.body.insertBefore(debugElement, document.body.firstChild);
-
-    const popupElements = [
-        { id: "1", className: "big-box hidden", text: "Top sabes escrever códigos já percebi" },
-        { id: "2", className: "big-box hidden", text: "Mas e saber programar?" },
-        { id: "3", className: "big-box hidden", text: "Para a próxima parte tens 2 possibilidades" },
-        { id: "4", className: "big-box hidden", text: "Aprender a controlar event listeners" },
-        { id: "5", className: "big-box hidden", text: "Ou brute force (aconselho a teres calma)" },
-        { id: "6", className: "big-box hidden", text: "The time has passed, and it is yet to come" },
-        { id: "7", className: "big-box hidden", text: "Espertinho, mas esse código foi só uma sequencia aleatória para te fazer perder tempo" }
-    ];
-
-    popupElements.forEach(({ id, className, text }) => {
-        const element = document.createElement("div");
-        element.id = id;
-        element.className = className;
-        element.textContent = text;
-        document.body.appendChild(element);
-    });
-
-    const finalCodeLink = document.createElement("a");
-    finalCodeLink.href = "final_code.ino";
-    finalCodeLink.className = "small-box hidden";
-    finalCodeLink.id = "999";
-    finalCodeLink.download = "Código final";
-    finalCodeLink.textContent = ":)";
-    document.body.appendChild(finalCodeLink);
-
-    const clueLink = document.createElement("a");
-    clueLink.href = "clue.png";
-    clueLink.className = "small-box hidden";
-    clueLink.id = "clueImage";
-    clueLink.download = "stuff";
-    clueLink.textContent = "?";
-    document.body.appendChild(clueLink);
-
-    const phiLink = document.createElement("a");
-    phiLink.href = "foto.jpeg";
-    phiLink.className = "small-box hidden";
-    phiLink.id = "phiImage";
-    phiLink.download = "find_where";
-    phiLink.textContent = "?";
-    document.body.appendChild(phiLink);
-
-    const riddleLink = document.createElement("a");
-    riddleLink.href = "riddle.txt";
-    riddleLink.className = "small-box hidden";
-    riddleLink.id = "download";
-    riddleLink.textContent = "!";
-    document.body.appendChild(riddleLink);
-
-    const gameLink = document.createElement("a");
-    gameLink.href = "game.zip";
-    gameLink.className = "big-box hidden";
-    gameLink.id = "game";
-    gameLink.download = "Back_Again.zip";
-    gameLink.textContent = "Guess Who's back";
-    document.body.appendChild(gameLink);
+function ensureDebug() {
+    let debugElement = document.getElementById("debug");
+    if (!debugElement) {
+        debugElement = document.createElement("p");
+        debugElement.id = "debug";
+        document.body.insertBefore(debugElement, document.body.firstChild);
+    }
+    return debugElement;
 }
 
-createPuzzleElements();
+function ensureElement(id, tagName, className, text, href, download) {
+    let element = document.getElementById(id);
+    if (!element) {
+        element = document.createElement(tagName);
+        element.id = id;
+        element.className = className;
+        if (text !== undefined) element.textContent = text;
+        if (href !== undefined) element.href = href;
+        if (download !== undefined) element.download = download;
+        document.body.appendChild(element);
+    }
+    return element;
+}
 
-debug = document.getElementById("debug")
+function createBox(num) {
+    return ensureElement(String(num), "div", "big-box hidden", BOX_TEXTS[num]);
+}
+
+let debug = ensureDebug();
 function print(a){
     debug.textContent = a;
 }
@@ -130,7 +102,7 @@ input.addEventListener("keydown", (e) => {
 
 let resolver = null;
 function show_box(num){
-    box = document.getElementById(num)
+    box = createBox(num)
     box.classList.remove("hidden")
     
     if (num == 5){
@@ -159,7 +131,7 @@ function show_box(num){
 
 function clue_image(){
     input.remove()
-    document.querySelector('#clueImage').classList.remove('hidden')
+    ensureElement('clueImage', 'a', 'small-box hidden', '?', 'clue.png', 'stuff').classList.remove('hidden')
 }
 
 
@@ -178,9 +150,7 @@ async function game_download(){
     
     btn.classList.add('hidden')
 
-
-
-    document.querySelector('#game').classList.remove('hidden')
+    ensureElement('game', 'a', 'big-box hidden', "Guess Who's back", 'game.zip', 'Back_Again.zip').classList.remove('hidden')
 }
 
 
@@ -190,7 +160,7 @@ async function riddle(){
 
     const now = new Date()
     if ((now.getHours() == 0 && now.getMinutes() == 0) || (now.getHours() == 0 && now.getMinutes() == 1) || (now.getHours() == 23 && now.getMinutes() == 59)){
-        document.querySelector('#download').classList.remove('hidden')
+        ensureElement('download', 'a', 'small-box hidden', '!', 'riddle.txt').classList.remove('hidden')
     }
     else {
         console.log(now.getMinutes())
@@ -212,7 +182,7 @@ async function final_code(){
     input.remove()
     document.querySelectorAll(".tile").forEach(t=>t.remove())
 
-    await show_box(999)
+    ensureElement('999', 'a', 'small-box hidden', ':)', 'final_code.ino', 'Código final').classList.remove('hidden')
 }
 
 
@@ -226,5 +196,5 @@ async function schematics() {
 
 async function phi(){
     input.remove()
-    document.querySelector('#phiImage').classList.remove('hidden')
+    ensureElement('phiImage', 'a', 'small-box hidden', '?', 'foto.jpeg', 'find_where').classList.remove('hidden')
 }
