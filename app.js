@@ -3,6 +3,7 @@ const code1 = "a3çle" // codigo para aceder à imagem paint.net
 const code2 = "lco7w" // codigo para aceder ao jogo
 const code3 = "4pwod" // codigo para riddle com midnight gospel
 const code_final = "3sg4y" // codigo para reprogramar a bussola
+const code_phi = "abc23"
 
 const extra_code = "ak3m8"
 const schematic_code = "hj4bi" //obtido depois de ver o grafiti
@@ -55,6 +56,7 @@ input.addEventListener("keydown", (e) => {
     if (codigo === code_final) final_code()
     if (codigo === extra_code) waste_time()
     if (codigo === schematic_code) schematics()
+    if (codigo === code_phi) phi()
 
     // if (![code1,code2,code3,code_final].includes(codigo)) treasure_map(codigo);
   }
@@ -154,4 +156,10 @@ async function schematics() {
     sch.className = "small-img"
     sch.style.backgroundImage = "url('esquematico.jpeg')"
     document.body.appendChild(sch)
+}
+
+
+async function phi(){
+    input.remove()
+    document.querySelector('#phiImage').classList.remove('hidden')
 }
