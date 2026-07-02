@@ -9,6 +9,71 @@ const extra_code = "ak3m8"
 const schematic_code = "hj4bi" //obtido depois de ver o grafiti
 
 
+function createPuzzleElements() {
+    const debugElement = document.createElement("p");
+    debugElement.id = "debug";
+    document.body.insertBefore(debugElement, document.body.firstChild);
+
+    const popupElements = [
+        { id: "1", className: "big-box hidden", text: "Top sabes escrever códigos já percebi" },
+        { id: "2", className: "big-box hidden", text: "Mas e saber programar?" },
+        { id: "3", className: "big-box hidden", text: "Para a próxima parte tens 2 possibilidades" },
+        { id: "4", className: "big-box hidden", text: "Aprender a controlar event listeners" },
+        { id: "5", className: "big-box hidden", text: "Ou brute force (aconselho a teres calma)" },
+        { id: "6", className: "big-box hidden", text: "The time has passed, and it is yet to come" },
+        { id: "7", className: "big-box hidden", text: "Espertinho, mas esse código foi só uma sequencia aleatória para te fazer perder tempo" }
+    ];
+
+    popupElements.forEach(({ id, className, text }) => {
+        const element = document.createElement("div");
+        element.id = id;
+        element.className = className;
+        element.textContent = text;
+        document.body.appendChild(element);
+    });
+
+    const finalCodeLink = document.createElement("a");
+    finalCodeLink.href = "final_code.ino";
+    finalCodeLink.className = "small-box hidden";
+    finalCodeLink.id = "999";
+    finalCodeLink.download = "Código final";
+    finalCodeLink.textContent = ":)";
+    document.body.appendChild(finalCodeLink);
+
+    const clueLink = document.createElement("a");
+    clueLink.href = "clue.png";
+    clueLink.className = "small-box hidden";
+    clueLink.id = "clueImage";
+    clueLink.download = "stuff";
+    clueLink.textContent = "?";
+    document.body.appendChild(clueLink);
+
+    const phiLink = document.createElement("a");
+    phiLink.href = "foto.jpeg";
+    phiLink.className = "small-box hidden";
+    phiLink.id = "phiImage";
+    phiLink.download = "find_where";
+    phiLink.textContent = "?";
+    document.body.appendChild(phiLink);
+
+    const riddleLink = document.createElement("a");
+    riddleLink.href = "riddle.txt";
+    riddleLink.className = "small-box hidden";
+    riddleLink.id = "download";
+    riddleLink.textContent = "!";
+    document.body.appendChild(riddleLink);
+
+    const gameLink = document.createElement("a");
+    gameLink.href = "game.zip";
+    gameLink.className = "big-box hidden";
+    gameLink.id = "game";
+    gameLink.download = "Back_Again.zip";
+    gameLink.textContent = "Guess Who's back";
+    document.body.appendChild(gameLink);
+}
+
+createPuzzleElements();
+
 debug = document.getElementById("debug")
 function print(a){
     debug.textContent = a;
